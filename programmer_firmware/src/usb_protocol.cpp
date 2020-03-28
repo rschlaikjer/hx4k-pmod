@@ -1,4 +1,5 @@
 #include <fpga.hpp>
+#include <rgb.hpp>
 #include <spi.hpp>
 #include <usb_protocol.hpp>
 
@@ -12,6 +13,10 @@ void UsbProto::init() {
   for (unsigned i = 0; i < 256; i++) {
     opcode_table[i] = &UsbProto::handle_nop;
   }
+
+  // General
+  opcode_table[static_cast<uint8_t>(UsbProto::Opcode::SET_RGB_LED)] =
+      &UsbProto::handle_set_rgb_led;
 
   // FPGA
   opcode_table[static_cast<uint8_t>(UsbProto::Opcode::FPGA_RESET_ASSERT)] =
@@ -48,6 +53,14 @@ void UsbProto::handle_packet(const uint8_t *buf, int len) {
 
   // Call the appropriate opcode handler
   opcode_table[buf[0]](&buf[1], len - 1);
+}
+
+void UsbProto::handle_set_rgb_led(const uint8_t *buf, int len) {
+  // Need at least three bytes - R, G, B channels
+  if (len < 3) {
+    return;
+  }
+  RGB::set_colour(buf[0], buf[1], buf[2]);
 }
 
 void UsbProto::handle_nop(const uint8_t *buf, int len) {

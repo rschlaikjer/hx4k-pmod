@@ -5,20 +5,22 @@
 namespace UsbProto {
 
 enum class Opcode : uint8_t {
-  NOP = 0x0,
+  // General
+  NOP = 0x00,
+  SET_RGB_LED = 0x01,
   // FPGA interface
-  FPGA_RESET_ASSERT = 0x01,
-  FPGA_RESET_DEASSERT = 0x02,
-  FPGA_QUERY_STATUS = 0x03,
+  FPGA_RESET_ASSERT = 0x10,
+  FPGA_RESET_DEASSERT = 0x11,
+  FPGA_QUERY_STATUS = 0x012,
   // Flash interface
-  FLASH_IDENTIFY = 0x10,
-  FLASH_ERASE_4K = 0x11,
-  FLASH_ERASE_32K = 0x12,
-  FLASH_ERASE_64K = 0x13,
-  FLASH_ERASE_CHIP = 0x14,
-  FLASH_WRITE = 0x15,
-  FLASH_READ = 0x16,
-  FLASH_QUERY_STATUS = 0x17,
+  FLASH_IDENTIFY = 0x20,
+  FLASH_ERASE_4K = 0x21,
+  FLASH_ERASE_32K = 0x22,
+  FLASH_ERASE_64K = 0x23,
+  FLASH_ERASE_CHIP = 0x24,
+  FLASH_WRITE = 0x25,
+  FLASH_READ = 0x26,
+  FLASH_QUERY_STATUS = 0x27,
 };
 
 // Initializes our opcode jump table
@@ -26,7 +28,10 @@ void init();
 
 // Entry point for packets coming in off usb
 void handle_packet(const uint8_t *buf, int len);
+
+// Generic
 void handle_nop(const uint8_t *buf, int len);
+void handle_set_rgb_led(const uint8_t *buf, int len);
 
 // FPGA
 void handle_fpga_reset_assert(const uint8_t *buf, int len);
