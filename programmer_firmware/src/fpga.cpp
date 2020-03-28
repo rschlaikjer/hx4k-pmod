@@ -20,3 +20,7 @@ void FPGA::assert_reset() {
 void FPGA::deassert_reset() {
   gpio_set(config::fpga_en_port, config::fpga_en_pin);
 }
+
+bool FPGA::is_reset() {
+  return gpio_get(config::fpga_en_port, config::fpga_en_pin) == 0;
+}

@@ -45,6 +45,7 @@ set(SRCS
     src/rgb.cpp
     src/uart.cpp
     src/usb.cpp
+    src/usb_fsm.cpp
     src/usb_interfaces.c
 )
 

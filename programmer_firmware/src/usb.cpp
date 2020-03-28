@@ -5,6 +5,7 @@
 
 #include <config.hpp>
 #include <usb.hpp>
+#include <usb_fsm.hpp>
 #include <usb_interfaces.h>
 
 namespace {
@@ -105,7 +106,11 @@ void cdc_data_ep_rx_cb(usbd_device *usbd_dev, uint8_t ep) {
 }
 
 void flash_ep_rx_cb(usbd_device *usbd_dev, uint8_t ep) {
-  // TODO(ross)
+  // Read the packet from the endpoint
+  uint8_t buf[USB_MAX_PACKET_SIZE];
+  int len = usbd_ep_read_packet(usbd_dev, ep, buf, USB_MAX_PACKET_SIZE);
+  // Submit it to the usb state machine
+  UsbFsm::handle_packet(buf, len);
 }
 
 void usb_config_cb(usbd_device *usbd_dev,
