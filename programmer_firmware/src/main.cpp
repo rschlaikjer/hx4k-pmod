@@ -16,6 +16,11 @@
 void clock_setup();
 void event_loop();
 int main() {
+  // Enable watchdog
+  iwdg_set_period_ms(50);
+  iwdg_reset();
+  iwdg_start();
+
   // Move from default clock source to 48MHz PLL
   clock_setup();
 
@@ -67,4 +72,7 @@ void clock_setup() {
 void event_loop() {
   // Poll for new USB events
   USB::poll();
+
+  // Tickle watchdog
+  iwdg_reset();
 }
