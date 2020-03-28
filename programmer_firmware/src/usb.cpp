@@ -124,9 +124,9 @@ void usb_config_cb(usbd_device *usbd_dev,
       USB_REQ_TYPE_TYPE | USB_REQ_TYPE_RECIPIENT, cdcacm_control_request);
 
   // Flash programming
-  usbd_ep_setup(usbd_dev, USB_EP_FLASH_IN, USB_ENDPOINT_ATTR_BULK,
+  usbd_ep_setup(usbd_dev, USB_EP_FLASH_RX, USB_ENDPOINT_ATTR_BULK,
                 USB_MAX_PACKET_SIZE, flash_ep_rx_cb);
-  usbd_ep_setup(usbd_dev, USB_EP_FLASH_OUT, USB_ENDPOINT_ATTR_BULK,
+  usbd_ep_setup(usbd_dev, USB_EP_FLASH_TX, USB_ENDPOINT_ATTR_BULK,
                 USB_MAX_PACKET_SIZE, nullptr);
 }
 

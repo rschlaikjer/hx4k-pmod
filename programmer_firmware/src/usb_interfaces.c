@@ -41,7 +41,7 @@ static const struct usb_endpoint_descriptor programming_endpoints[] = {
     {
         .bLength = USB_DT_ENDPOINT_SIZE,
         .bDescriptorType = USB_DT_ENDPOINT,
-        .bEndpointAddress = USB_EP_FLASH_IN,
+        .bEndpointAddress = USB_EP_FLASH_RX,
         .bmAttributes = USB_ENDPOINT_ATTR_BULK,
         .wMaxPacketSize = USB_MAX_PACKET_SIZE,
         .bInterval = 1,
@@ -49,7 +49,7 @@ static const struct usb_endpoint_descriptor programming_endpoints[] = {
     {
         .bLength = USB_DT_ENDPOINT_SIZE,
         .bDescriptorType = USB_DT_ENDPOINT,
-        .bEndpointAddress = USB_EP_FLASH_OUT,
+        .bEndpointAddress = USB_EP_FLASH_TX,
         .bmAttributes = USB_ENDPOINT_ATTR_BULK,
         .wMaxPacketSize = USB_MAX_PACKET_SIZE,
         .bInterval = 1,
