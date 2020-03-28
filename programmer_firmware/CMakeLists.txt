@@ -43,10 +43,11 @@ set(SRCS
     src/fpga.cpp
     src/main.cpp
     src/rgb.cpp
+    src/spi.cpp
     src/uart.cpp
     src/usb.cpp
-    src/usb_fsm.cpp
     src/usb_interfaces.c
+    src/usb_protocol.cpp
 )
 
 set(DEFS "${DEFS} ${USER_DEFS} -DSTM32F0 -DPRINTF_DISABLE_SUPPORT_FLOAT")

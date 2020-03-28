@@ -5,8 +5,8 @@
 
 #include <config.hpp>
 #include <usb.hpp>
-#include <usb_fsm.hpp>
 #include <usb_interfaces.h>
+#include <usb_protocol.hpp>
 
 namespace {
 // Handle to HAL usb device
@@ -110,7 +110,7 @@ void flash_ep_rx_cb(usbd_device *usbd_dev, uint8_t ep) {
   uint8_t buf[USB_MAX_PACKET_SIZE];
   int len = usbd_ep_read_packet(usbd_dev, ep, buf, USB_MAX_PACKET_SIZE);
   // Submit it to the usb state machine
-  UsbFsm::handle_packet(buf, len);
+  UsbProto::handle_packet(buf, len);
 }
 
 void usb_config_cb(usbd_device *usbd_dev,

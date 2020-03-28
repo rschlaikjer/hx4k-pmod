@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-namespace UsbFsm {
+namespace UsbProto {
 
 enum class Opcode : uint8_t {
   NOP = 0x0,
@@ -43,4 +43,4 @@ void handle_flash_write(const uint8_t *buf, int len);
 void handle_flash_read(const uint8_t *buf, int len);
 void handle_flash_query_status(const uint8_t *buf, int len);
 
-} // namespace UsbFsm
+} // namespace UsbProto

@@ -12,7 +12,7 @@
 #include <rgb.hpp>
 #include <uart.hpp>
 #include <usb.hpp>
-#include <usb_fsm.hpp>
+#include <usb_protocol.hpp>
 
 void clock_setup();
 void event_loop();
@@ -29,7 +29,7 @@ int main() {
   FPGA::init();
   UART::init();
   RGB::init();
-  UsbFsm::init();
+  UsbProto::init();
   USB::init();
 
   // Run event loop forever
