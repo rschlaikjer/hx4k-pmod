@@ -40,7 +40,11 @@ set(CM3_FAMILY opencm3_stm32f0)
 set(BMP_PORT "/dev/ttyACM0")
 
 set(SRCS
+    src/fpga.cpp
     src/main.cpp
+    src/rgb.cpp
+    src/uart.cpp
+    src/usb.cpp
 )
 
 set(DEFS "${DEFS} ${USER_DEFS} -DSTM32F0 -DPRINTF_DISABLE_SUPPORT_FLOAT")
