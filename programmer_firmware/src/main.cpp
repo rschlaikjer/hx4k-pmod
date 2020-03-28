@@ -60,10 +60,11 @@ void clock_setup() {
 
   // These globals are used in opencm3, need to make sure we set them to the
   // correct system clock speed
-  rcc_apb1_frequency = 48000000;
-  rcc_ahb_frequency = 48000000;
+  rcc_apb1_frequency = 48'000'000;
+  rcc_ahb_frequency = 48'000'000;
 }
 
 void event_loop() {
-  // TODO(ross)
+  // Poll for new USB events
+  USB::poll();
 }

@@ -45,6 +45,7 @@ set(SRCS
     src/rgb.cpp
     src/uart.cpp
     src/usb.cpp
+    src/usb_interfaces.c
 )
 
 set(DEFS "${DEFS} ${USER_DEFS} -DSTM32F0 -DPRINTF_DISABLE_SUPPORT_FLOAT")
