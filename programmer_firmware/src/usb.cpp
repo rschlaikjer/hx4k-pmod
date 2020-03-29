@@ -1,9 +1,11 @@
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/rcc.h>
+#include <libopencm3/stm32/st_usbfs.h>
 #include <libopencm3/usb/cdc.h>
 #include <libopencm3/usb/usbd.h>
 
 #include <config.hpp>
+#include <uart.hpp>
 #include <usb.hpp>
 #include <usb_interfaces.h>
 #include <usb_protocol.hpp>
@@ -14,6 +16,10 @@ static usbd_device *usb_handle;
 // Buffer for the HAL to handle control requests with
 uint8_t usbd_control_buffer[128];
 } // namespace
+
+// Get the endpoint register for a given endpoint
+// Endpoint needs to have the IN/OUT bit masked off
+// #define USB_EP_REG(EP) (&MMIO32(USB_DEV_FS_BASE) + (EP))
 
 // Device descriptor.
 // Since we will expose a usb serial endpoint that is connected to our UART,
@@ -102,9 +108,11 @@ static enum usbd_request_return_codes cdcacm_control_request(
 }
 
 void cdc_data_ep_rx_cb(usbd_device *usbd_dev, uint8_t ep) {
+  // Read the data out of the endpoint
   uint8_t buf[USB_MAX_PACKET_SIZE];
   int len = usbd_ep_read_packet(usbd_dev, ep, buf, USB_MAX_PACKET_SIZE);
-  // TODO(ross)
+  // Push it all into the UART buffer for transmit
+  UART::send(buf, len);
 }
 
 void flash_ep_rx_cb(usbd_device *usbd_dev, uint8_t ep) {
@@ -158,6 +166,23 @@ void USB::init() {
 
 void USB::transmit_programming_packet(uint8_t *data, unsigned len) {
   usbd_ep_write_packet(usb_handle, USB_EP_FLASH_TX, data, len);
+}
+
+bool USB::endpoint_ready_to_send(uint8_t endpoint) {
+  // The HAL sets the endpoint state to 'VALID' when a packet is pending
+  // transmission, so if it is stil in the VALID state then it's not ready to
+  // accept more data.
+  if ((*USB_EP_REG(endpoint & 0x7F) & USB_EP_TX_STAT) == USB_EP_TX_STAT_VALID) {
+    return false;
+  }
+  return true;
+}
+
+bool USB::can_transmit_serial_packet() {
+  return endpoint_ready_to_send(USB_EP_CDC_DATA_TX);
+}
+void USB::transmit_serial_packet(uint8_t *data, unsigned len) {
+  usbd_ep_write_packet(usb_handle, USB_EP_CDC_DATA_TX, data, len);
 }
 
 void USB::poll() { usbd_poll(usb_handle); }

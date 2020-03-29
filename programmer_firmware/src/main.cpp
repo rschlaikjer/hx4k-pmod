@@ -75,6 +75,13 @@ void event_loop() {
   // Poll for new USB events
   USB::poll();
 
+  // Check if we need to flush the UART rx buffer
+  if (UART::available() && USB::can_transmit_serial_packet()) {
+    uint8_t buf[64];
+    unsigned count = UART::receive(buf, sizeof(buf));
+    USB::transmit_serial_packet(buf, count);
+  }
+
   // Tickle watchdog
   iwdg_reset();
 }

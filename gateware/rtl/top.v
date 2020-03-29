@@ -19,13 +19,19 @@ module top(
         output wire PMOD_C1_D4,
         output wire PMOD_C1_D5,
         output wire PMOD_C1_D6,
-        output wire PMOD_C1_D7
+        output wire PMOD_C1_D7,
+
+        input wire MCU_UART_TX,
+        output wire MCU_UART_RX
     );
 
     // PLL
     wire clk_48mhz;
     wire pll_lock;
     ice_pll pll(CLK_12MHZ, clk_48mhz, pll_lock);
+
+    // UART loopback
+    assign MCU_UART_RX = MCU_UART_TX;
 
     // 7-segment counter
     reg [7:0] seven_seg_counter = 0;
