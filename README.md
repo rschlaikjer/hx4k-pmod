@@ -14,7 +14,7 @@ Lattice Ice40 HX4K.
 - Flux (Massively simplifies the soldering of the QFP packages)
 - Fine tweezers (I recommend [Rhino SW-11](https://www.adafruit.com/product/3096) or comparable)
 - [Optional] Hot air rework station. The '858D' hot air station is available
-from many resellers at reasonably prices, and is more than adequate.
+from many resellers at reasonable prices, and is more than adequate.
 
 One of the design goals for this board was for it to be feasible to assemble by
 hand, using only a soldering iron. To that end, all of the critical
@@ -23,10 +23,14 @@ For some components (USB type-C connector J4, 12MHz oscillator X1 and RGB LEDs
 D1 and U4), a hot air gun may be advantageous, but it is possible to get away
 without one.
 
+### Ordering PCBs
+
+TODO
+
 ### Bill of materials
 
 The KiCad design files are fully specified with the manufacturer and DigiKey
-part numbers for all components involved. Also included in the hardware/ folder
+part numbers for all components involved. Also included in the `hardware/` folder
 is a DigiKey BOM CSV (`digikey_bom.csv`), which can be uploaded
 [here](https://www.digikey.com/BOM/) and used to immediately add the necessary
 components to an order. Note that the BOM item quantity is for _precisely_ one
@@ -43,7 +47,15 @@ If you intend to make more than one, the unit price will of course decrease.
 
 I highly recommend printing out the `F.Fab` and `B.Fab` layers of the KiCad
 design before getting to work, as these contain a wireframe layout of all the
-components, as well as their associated values.
+components, as well as their associated values (pictured on right hand side). I
+would also recommend starting with the center of the major component sections
+(U1, U3) and working outwards to smaller components, otherwise some of the
+decoupling caps near the chips may make it tricky to solder the QFPs.
+
+If you are using a hot air station for assembly, I would recommend applying
+flux to the pads, tinning them, placing the component on top and then using the
+hot air tool to reflow it into place. I find 350°C to work well for leaded
+solder. Be careful not to overheat the LEDs, as the plastic may melt.
 
 ![Board Assembly](/img/assembly.jpg)
 
