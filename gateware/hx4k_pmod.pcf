@@ -1,0 +1,32 @@
+# 12 MHz clock
+set_io -nowarn CLK_12MHZ     21
+
+# RGB led
+set_io -nowarn LED_R        84
+set_io -nowarn LED_G        85
+set_io -nowarn LED_B        83
+
+# SPI connection to microcontroller
+set_io -nowarn MCU_SPI_CS   73
+set_io -nowarn MCU_SPI_SCK  74
+set_io -nowarn MCU_SPI_MISO 75
+set_io -nowarn MCU_SPI_MOSI 76
+
+# UART connection to microcontroller
+# Note that these names are from the point of view of the MCU.
+# The FPGA should TRANSMIT on MCU_RX, and RECEIVE on MCU_TX
+set_io -nowarn MCU_UART_RX 81
+set_io -nowarn MCU_UART_TX 82
+
+### PMODs
+
+
+# C1
+set_io -nowarn PMOD_C1_D0   10
+set_io -nowarn PMOD_C1_D1   8
+set_io -nowarn PMOD_C1_D2   4
+set_io -nowarn PMOD_C1_D3   2
+set_io -nowarn PMOD_C1_D4   9
+set_io -nowarn PMOD_C1_D5   7
+set_io -nowarn PMOD_C1_D6   3
+set_io -nowarn PMOD_C1_D7   1
