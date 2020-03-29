@@ -102,6 +102,8 @@ static enum usbd_request_return_codes cdcacm_control_request(
 }
 
 void cdc_data_ep_rx_cb(usbd_device *usbd_dev, uint8_t ep) {
+  uint8_t buf[USB_MAX_PACKET_SIZE];
+  int len = usbd_ep_read_packet(usbd_dev, ep, buf, USB_MAX_PACKET_SIZE);
   // TODO(ross)
 }
 

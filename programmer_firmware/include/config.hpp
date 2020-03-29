@@ -37,7 +37,7 @@ static const uint32_t fpga_uart_baudrate = 2'000'000;
 
 // USB vendor / product information
 static const uint16_t usb_id_vendor = 0x1209;
-static const uint16_t usb_id_product = 0xf002;
+static const uint16_t usb_id_product = 0x0001;
 static const uint16_t usb_id_bcd_device_revision = 0x0200;
 // USB Strings
 static const char *usb_string_manufacturer = "Ross Schlaikjer";
