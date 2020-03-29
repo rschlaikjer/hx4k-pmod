@@ -47,4 +47,8 @@ void erase_32k(uint32_t addr);
 void erase_64k(uint32_t addr);
 void erase_chip();
 
+// Read/write
+void write(uint32_t addr, const uint8_t *data, unsigned write_size);
+void read(uint32_t addr, uint8_t *out, unsigned read_size);
+
 } // namespace Flash

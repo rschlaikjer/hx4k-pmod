@@ -69,7 +69,7 @@ void extract_24bit_addr(uint32_t addr, uint8_t *out) {
 void Flash::erase_4k(uint32_t addr) {
   write_enable();
   // Send erase command
-  uint8_t buffer[] = {static_cast<uint8_t>(FlashCommand::SECTOR_ERASE_4K)};
+  uint8_t buffer[4] = {static_cast<uint8_t>(FlashCommand::SECTOR_ERASE_4K)};
   extract_24bit_addr(addr, &buffer[1]);
   select();
   SPI::xfer(buffer, nullptr, sizeof(buffer));
@@ -79,7 +79,7 @@ void Flash::erase_4k(uint32_t addr) {
 void Flash::erase_32k(uint32_t addr) {
   write_enable();
   // Send erase command
-  uint8_t buffer[] = {static_cast<uint8_t>(FlashCommand::BLOCK_ERASE_32K)};
+  uint8_t buffer[4] = {static_cast<uint8_t>(FlashCommand::BLOCK_ERASE_32K)};
   extract_24bit_addr(addr, &buffer[1]);
   select();
   SPI::xfer(buffer, nullptr, sizeof(buffer));
@@ -89,7 +89,7 @@ void Flash::erase_32k(uint32_t addr) {
 void Flash::erase_64k(uint32_t addr) {
   write_enable();
   // Send erase command
-  uint8_t buffer[] = {static_cast<uint8_t>(FlashCommand::BLOCK_ERASE_64K)};
+  uint8_t buffer[4] = {static_cast<uint8_t>(FlashCommand::BLOCK_ERASE_64K)};
   extract_24bit_addr(addr, &buffer[1]);
   select();
   SPI::xfer(buffer, nullptr, sizeof(buffer));
@@ -118,4 +118,24 @@ bool Flash::is_busy() {
   uint16_t status_reg_1;
   read_status_register_1(&status_reg_1);
   return status_reg_1 & FLASH_SR1_BUSY;
+}
+
+void Flash::write(uint32_t addr, const uint8_t *data, unsigned size) {
+  write_enable();
+  uint8_t buffer[4] = {static_cast<uint8_t>(FlashCommand::PAGE_PROGRAM)};
+  extract_24bit_addr(addr, &buffer[1]);
+  select();
+  SPI::xfer(buffer, nullptr, sizeof(buffer));
+  SPI::xfer(data, nullptr, size);
+  deselect();
+}
+
+void Flash::read(uint32_t addr, uint8_t *data, unsigned size) {
+  // Note this is 5 bytes, need an extra dummy byte
+  uint8_t buffer[5] = {static_cast<uint8_t>(FlashCommand::FAST_READ)};
+  extract_24bit_addr(addr, &buffer[1]);
+  select();
+  SPI::xfer(buffer, nullptr, sizeof(buffer));
+  SPI::xfer(nullptr, data, size);
+  deselect();
 }

@@ -50,6 +50,7 @@ void UsbProto::init() {
 void UsbProto::handle_packet(const uint8_t *buf, int len) {
   // Packet must have at least an opcode
   if (len < 1) {
+    RGB::set_colour(128, 0, 0);
     return;
   }
 
@@ -60,6 +61,7 @@ void UsbProto::handle_packet(const uint8_t *buf, int len) {
 void UsbProto::handle_set_rgb_led(const uint8_t *buf, int len) {
   // Need at least three bytes - R, G, B channels
   if (len < 3) {
+    RGB::set_colour(128, 0, 0);
     return;
   }
   RGB::set_colour(buf[0], buf[1], buf[2]);
@@ -113,8 +115,10 @@ void UsbProto::handle_flash_identify(const uint8_t *buf, int len) {
 
 void UsbProto::handle_flash_erase_4k(const uint8_t *buf, int len) {
   // Need to be able to read another 4 bytes for the sector address
-  if (len < 4)
+  if (len < 4) {
+    RGB::set_colour(128, 0, 0);
     return;
+  }
 
   // Get that sector address
   uint32_t sector_addr = (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]);
@@ -128,8 +132,10 @@ void UsbProto::handle_flash_erase_4k(const uint8_t *buf, int len) {
 
 void UsbProto::handle_flash_erase_32k(const uint8_t *buf, int len) {
   // Need to be able to read another 4 bytes for the sector address
-  if (len < 4)
+  if (len < 4) {
+    RGB::set_colour(128, 0, 0);
     return;
+  }
 
   // Get that sector address
   uint32_t sector_addr = (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]);
@@ -143,8 +149,10 @@ void UsbProto::handle_flash_erase_32k(const uint8_t *buf, int len) {
 
 void UsbProto::handle_flash_erase_64k(const uint8_t *buf, int len) {
   // Need to be able to read another 4 bytes for the sector address
-  if (len < 4)
+  if (len < 4) {
+    RGB::set_colour(128, 0, 0);
     return;
+  }
 
   // Get that sector address
   uint32_t sector_addr = (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]);
@@ -160,9 +168,53 @@ void UsbProto::handle_flash_erase_chip(const uint8_t *buf, int len) {
   Flash::erase_chip();
 }
 
-void UsbProto::handle_flash_write(const uint8_t *buf, int len) {}
+void UsbProto::handle_flash_write(const uint8_t *buf, int len) {
+  // Need to be able to read another
+  //  - 4 bytes for the base addr
+  //  - 1 byte for the amount to write
+  if (len < 5) {
+    RGB::set_colour(128, 0, 0);
+    return;
+  }
 
-void UsbProto::handle_flash_read(const uint8_t *buf, int len) {}
+  // Decode args
+  uint32_t addr = (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]);
+  uint8_t write_size = buf[4];
+
+  // If the size to write is more than the data that was received, can't do it
+  if (write_size > (len - 5)) {
+    RGB::set_colour(128, 0, 0);
+    return;
+  }
+
+  // Perform the write
+  Flash::write(addr, &buf[5], write_size);
+}
+
+void UsbProto::handle_flash_read(const uint8_t *buf, int len) {
+  // Need to be able to read another
+  //  - 4 bytes for the base addr
+  //  - 1 byte for the amount to read
+  if (len < 5) {
+    RGB::set_colour(128, 0, 0);
+    return;
+  }
+
+  // Decode args
+  uint32_t addr = (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]);
+  uint8_t read_size = buf[4];
+
+  // If the read size is bigger than a usb FS packet, can't do it
+  if (read_size > 64) {
+    RGB::set_colour(128, 0, 0);
+    return;
+  }
+
+  // Read into a reply buffer
+  uint8_t resp_buf[64];
+  Flash::read(addr, resp_buf, read_size);
+  USB::transmit_programming_packet(resp_buf, read_size);
+}
 
 void UsbProto::handle_flash_query_status(const uint8_t *buf, int len) {
   uint8_t status = 0;
