@@ -1,6 +1,7 @@
 #include <fpga.hpp>
 #include <rgb.hpp>
 #include <spi.hpp>
+#include <usb.hpp>
 #include <usb_protocol.hpp>
 
 typedef void (*opcode_handler)(const uint8_t *, int);
@@ -81,13 +82,14 @@ void UsbProto::handle_fpga_reset_deassert(const uint8_t *buf, int len) {
   FPGA::deassert_reset();
 }
 void UsbProto::handle_fpga_query_status(const uint8_t *buf, int len) {
-  uint8_t resp = 0;
+  uint8_t status = 0;
 
   if (FPGA::is_reset())
-    resp |= (1 << 0);
+    status |= (1 << 0);
 
   // Send response
-  // TODO
+  uint8_t resp[] = {status};
+  USB::transmit_programming_packet(resp, sizeof(resp));
 }
 
 void UsbProto::handle_flash_identify(const uint8_t *buf, int len) {}

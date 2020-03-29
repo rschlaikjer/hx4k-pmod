@@ -156,4 +156,8 @@ void USB::init() {
   usbd_register_set_config_callback(usb_handle, usb_config_cb);
 }
 
+void USB::transmit_programming_packet(uint8_t *data, unsigned len) {
+  usbd_ep_write_packet(usb_handle, USB_EP_FLASH_TX, data, len);
+}
+
 void USB::poll() { usbd_poll(usb_handle); }
