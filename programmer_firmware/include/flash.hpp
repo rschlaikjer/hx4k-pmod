@@ -22,6 +22,8 @@ enum class FlashCommand : uint8_t {
   GET_UNIQUE_ID = 0x4B,
 };
 
+static const uint16_t FLASH_SR1_BUSY = (1 << 0);
+
 // IO asserting/deasserting
 void init();
 void deinit();
@@ -30,10 +32,19 @@ void deinit();
 void select();
 void deselect();
 
-// Flash commands
+// General flash commands
 void reset();
 void wakeup();
 void read_mfgr_and_device_id(uint8_t *mfgr, uint8_t *device);
 void read_unique_id(uint8_t unique_id_out[8]);
+void read_status_register_1(uint16_t *out);
+bool is_busy();
+
+// Erasing
+void write_enable();
+void erase_4k(uint32_t addr);
+void erase_32k(uint32_t addr);
+void erase_64k(uint32_t addr);
+void erase_chip();
 
 } // namespace Flash

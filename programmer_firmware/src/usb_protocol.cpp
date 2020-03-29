@@ -111,11 +111,68 @@ void UsbProto::handle_flash_identify(const uint8_t *buf, int len) {
   USB::transmit_programming_packet(resp, sizeof(resp));
 }
 
-void UsbProto::handle_flash_erase_4k(const uint8_t *buf, int len) {}
-void UsbProto::handle_flash_erase_32k(const uint8_t *buf, int len) {}
-void UsbProto::handle_flash_erase_64k(const uint8_t *buf, int len) {}
-void UsbProto::handle_flash_erase_chip(const uint8_t *buf, int len) {}
+void UsbProto::handle_flash_erase_4k(const uint8_t *buf, int len) {
+  // Need to be able to read another 4 bytes for the sector address
+  if (len < 4)
+    return;
+
+  // Get that sector address
+  uint32_t sector_addr = (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]);
+
+  // Mask off the lower 4k
+  sector_addr &= ~(0xFFF);
+
+  // Ask the flash to wipe it
+  Flash::erase_4k(sector_addr);
+}
+
+void UsbProto::handle_flash_erase_32k(const uint8_t *buf, int len) {
+  // Need to be able to read another 4 bytes for the sector address
+  if (len < 4)
+    return;
+
+  // Get that sector address
+  uint32_t sector_addr = (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]);
+
+  // Mask off the lower 32k
+  sector_addr &= ~(0x7FFF);
+
+  // Ask the flash to wipe it
+  Flash::erase_32k(sector_addr);
+}
+
+void UsbProto::handle_flash_erase_64k(const uint8_t *buf, int len) {
+  // Need to be able to read another 4 bytes for the sector address
+  if (len < 4)
+    return;
+
+  // Get that sector address
+  uint32_t sector_addr = (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]);
+
+  // Mask off the lower 32k
+  sector_addr &= ~(0xFFFF);
+
+  // Ask the flash to wipe it
+  Flash::erase_64k(sector_addr);
+}
+
+void UsbProto::handle_flash_erase_chip(const uint8_t *buf, int len) {
+  Flash::erase_chip();
+}
+
 void UsbProto::handle_flash_write(const uint8_t *buf, int len) {}
+
 void UsbProto::handle_flash_read(const uint8_t *buf, int len) {}
-void UsbProto::handle_flash_query_status(const uint8_t *buf, int len) {}
+
+void UsbProto::handle_flash_query_status(const uint8_t *buf, int len) {
+  uint8_t status = 0;
+
+  // Is the flash still erasing / writing?
+  if (Flash::is_busy())
+    status |= (1 << 0);
+
+  // Send response
+  uint8_t resp[] = {status};
+  USB::transmit_programming_packet(resp, sizeof(resp));
+}
 

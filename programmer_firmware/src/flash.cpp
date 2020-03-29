@@ -52,3 +52,70 @@ void Flash::read_unique_id(uint8_t unique_id_out[8]) {
   SPI::xfer(nullptr, unique_id_out, 8);
   deselect();
 }
+
+void Flash::write_enable() {
+  uint8_t buffer[] = {static_cast<uint8_t>(FlashCommand::WRITE_ENABLE)};
+  select();
+  SPI::xfer(buffer, buffer, sizeof(buffer));
+  deselect();
+}
+
+void extract_24bit_addr(uint32_t addr, uint8_t *out) {
+  out[0] = (addr >> 16) & 0xFF;
+  out[1] = (addr >> 8) & 0xFF;
+  out[2] = (addr >> 0) & 0xFF;
+}
+
+void Flash::erase_4k(uint32_t addr) {
+  write_enable();
+  // Send erase command
+  uint8_t buffer[] = {static_cast<uint8_t>(FlashCommand::SECTOR_ERASE_4K)};
+  extract_24bit_addr(addr, &buffer[1]);
+  select();
+  SPI::xfer(buffer, nullptr, sizeof(buffer));
+  deselect();
+}
+
+void Flash::erase_32k(uint32_t addr) {
+  write_enable();
+  // Send erase command
+  uint8_t buffer[] = {static_cast<uint8_t>(FlashCommand::BLOCK_ERASE_32K)};
+  extract_24bit_addr(addr, &buffer[1]);
+  select();
+  SPI::xfer(buffer, nullptr, sizeof(buffer));
+  deselect();
+}
+
+void Flash::erase_64k(uint32_t addr) {
+  write_enable();
+  // Send erase command
+  uint8_t buffer[] = {static_cast<uint8_t>(FlashCommand::BLOCK_ERASE_64K)};
+  extract_24bit_addr(addr, &buffer[1]);
+  select();
+  SPI::xfer(buffer, nullptr, sizeof(buffer));
+  deselect();
+}
+
+void Flash::erase_chip() {
+  write_enable();
+  // Send erase command
+  uint8_t buffer[] = {static_cast<uint8_t>(FlashCommand::CHIP_ERASE)};
+  select();
+  SPI::xfer(buffer, nullptr, sizeof(buffer));
+  deselect();
+}
+
+void Flash::read_status_register_1(uint16_t *out) {
+  uint8_t buffer[3] = {0, 0, 0};
+  buffer[0] = static_cast<uint8_t>(FlashCommand::READ_STATUS_REGISTER_1);
+  select();
+  SPI::xfer(buffer, buffer, sizeof(buffer));
+  deselect();
+  *out = buffer[1] << 8 | buffer[2];
+}
+
+bool Flash::is_busy() {
+  uint16_t status_reg_1;
+  read_status_register_1(&status_reg_1);
+  return status_reg_1 & FLASH_SR1_BUSY;
+}
