@@ -21,6 +21,86 @@ set_io -nowarn MCU_UART_TX 82
 ### PMODs
 
 
+# A1
+set_io -nowarn PMOD_A1_D0   61
+set_io -nowarn PMOD_A1_D1   56
+set_io -nowarn PMOD_A1_D2   52
+set_io -nowarn PMOD_A1_D3   48
+set_io -nowarn PMOD_A1_D4   60
+set_io -nowarn PMOD_A1_D5   55
+set_io -nowarn PMOD_A1_D6   49
+set_io -nowarn PMOD_A1_D7   47
+
+# A2
+set_io -nowarn PMOD_A2_D0   45
+set_io -nowarn PMOD_A2_D1   43
+set_io -nowarn PMOD_A2_D2   41
+set_io -nowarn PMOD_A2_D3   38
+set_io -nowarn PMOD_A2_D4   44
+set_io -nowarn PMOD_A2_D5   42
+set_io -nowarn PMOD_A2_D6   39
+set_io -nowarn PMOD_A2_D7   47
+
+# A3
+set_io -nowarn PMOD_A3_D0   31
+set_io -nowarn PMOD_A3_D1   28
+set_io -nowarn PMOD_A3_D2   25
+set_io -nowarn PMOD_A3_D3   23
+set_io -nowarn PMOD_A3_D4   29
+set_io -nowarn PMOD_A3_D5   26
+set_io -nowarn PMOD_A3_D6   24
+set_io -nowarn PMOD_A3_D7   22
+
+# A4
+set_io -nowarn PMOD_A4_D0   20
+set_io -nowarn PMOD_A4_D1   18
+set_io -nowarn PMOD_A4_D2   16
+set_io -nowarn PMOD_A4_D3   12
+set_io -nowarn PMOD_A4_D4   19
+set_io -nowarn PMOD_A4_D5   17
+set_io -nowarn PMOD_A4_D6   15
+set_io -nowarn PMOD_A4_D7   11
+
+# B1
+set_io -nowarn PMOD_B1_D0   97
+set_io -nowarn PMOD_B1_D1   95
+set_io -nowarn PMOD_B1_D2   93
+set_io -nowarn PMOD_B1_D3   90
+set_io -nowarn PMOD_B1_D4   96
+set_io -nowarn PMOD_B1_D5   94
+set_io -nowarn PMOD_B1_D6   91
+set_io -nowarn PMOD_B1_D7   88
+
+# B2
+set_io -nowarn PMOD_B2_D0   107
+set_io -nowarn PMOD_B2_D1   105
+set_io -nowarn PMOD_B2_D2   102
+set_io -nowarn PMOD_B2_D3   99
+set_io -nowarn PMOD_B2_D4   106
+set_io -nowarn PMOD_B2_D5   104
+set_io -nowarn PMOD_B2_D6   101
+set_io -nowarn PMOD_B2_D7   98
+
+# B3
+set_io -nowarn PMOD_B3_D0   121
+set_io -nowarn PMOD_B3_D1   119
+set_io -nowarn PMOD_B3_D2   117
+set_io -nowarn PMOD_B3_D3   115
+set_io -nowarn PMOD_B3_D4   120
+set_io -nowarn PMOD_B3_D5   118
+set_io -nowarn PMOD_B3_D6   116
+set_io -nowarn PMOD_B3_D7   114
+
+# B4
+set_io -nowarn PMOD_B4_D0   135
+set_io -nowarn PMOD_B4_D1   130
+set_io -nowarn PMOD_B4_D2   128
+set_io -nowarn PMOD_B4_D3   124
+set_io -nowarn PMOD_B4_D4   134
+set_io -nowarn PMOD_B4_D5   129
+set_io -nowarn PMOD_B4_D6   125
+set_io -nowarn PMOD_B4_D7   122
+
 # C1
 set_io -nowarn PMOD_C1_D0   10
 set_io -nowarn PMOD_C1_D1   8
@@ -30,3 +110,13 @@ set_io -nowarn PMOD_C1_D4   9
 set_io -nowarn PMOD_C1_D5   7
 set_io -nowarn PMOD_C1_D6   3
 set_io -nowarn PMOD_C1_D7   1
+
+# C2
+set_io -nowarn PMOD_C2_D0   144
+set_io -nowarn PMOD_C2_D1   142
+set_io -nowarn PMOD_C2_D2   139
+set_io -nowarn PMOD_C2_D3   137
+set_io -nowarn PMOD_C2_D4   143
+set_io -nowarn PMOD_C2_D5   141
+set_io -nowarn PMOD_C2_D6   138
+set_io -nowarn PMOD_C2_D7   136
