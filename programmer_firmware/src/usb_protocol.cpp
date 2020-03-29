@@ -101,8 +101,11 @@ void UsbProto::handle_fpga_query_status(const uint8_t *buf, int len) {
 
 void UsbProto::handle_flash_identify(const uint8_t *buf, int len) {
   // Perform the SPI transaction to get the chip IDs
-  uint8_t resp[2] = {0x13, 0x37};
+  uint8_t resp[10];
+  // First two bytes: mfgr id, device ID
   Flash::read_mfgr_and_device_id(&resp[0], &resp[1]);
+  // Next 8 bytes: unique chip ID
+  Flash::read_unique_id(&resp[2]);
 
   // Send response
   USB::transmit_programming_packet(resp, sizeof(resp));

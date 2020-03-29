@@ -44,3 +44,11 @@ void Flash::read_mfgr_and_device_id(uint8_t *mfgr, uint8_t *device) {
   *device = buffer[5];
 }
 
+void Flash::read_unique_id(uint8_t unique_id_out[8]) {
+  uint8_t buffer[5] = {0};
+  buffer[0] = static_cast<uint8_t>(FlashCommand::GET_UNIQUE_ID);
+  select();
+  SPI::xfer(buffer, buffer, sizeof(buffer));
+  SPI::xfer(nullptr, unique_id_out, 8);
+  deselect();
+}

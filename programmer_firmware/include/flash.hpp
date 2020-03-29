@@ -34,5 +34,6 @@ void deselect();
 void reset();
 void wakeup();
 void read_mfgr_and_device_id(uint8_t *mfgr, uint8_t *device);
+void read_unique_id(uint8_t unique_id_out[8]);
 
 } // namespace Flash
