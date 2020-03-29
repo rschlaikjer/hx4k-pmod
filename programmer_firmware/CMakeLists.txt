@@ -40,6 +40,7 @@ set(CM3_FAMILY opencm3_stm32f0)
 set(BMP_PORT "/dev/ttyACM0")
 
 set(SRCS
+    src/flash.cpp
     src/fpga.cpp
     src/main.cpp
     src/rgb.cpp

@@ -18,12 +18,17 @@ static const uint32_t fpga_en_port = GPIOB;
 static const uint32_t fpga_en_pin = GPIO10;
 
 // Flash chip IO configuration
-static const uint32_t bitstream_flash_spi{SPI1};
+static const uint32_t bitstream_flash_spi = SPI1;
 static const rcc_periph_clken bitstream_flash_gpio_rcc = RCC_GPIOA;
-static const rcc_periph_clken bitstream_flash_spi_rcc{RCC_SPI1};
-static const uint32_t bitstream_flash_spi_port{GPIOA};
-static const uint16_t bitstream_flash_spi_pins{GPIO5 | GPIO6 | GPIO7};
-static const uint8_t bitstream_flash_spi_af{GPIO_AF0};
+static const rcc_periph_clken bitstream_flash_spi_rcc = RCC_SPI1;
+static const uint32_t bitstream_flash_spi_port = GPIOA;
+static const uint16_t bitstream_flash_spi_pins = GPIO5 | GPIO6 | GPIO7;
+static const uint8_t bitstream_flash_spi_af = GPIO_AF0;
+
+// Flash chip select
+static const rcc_periph_clken bitstream_flash_cs_rcc = RCC_GPIOA;
+static const uint32_t bitstream_flash_cs_port = GPIOA;
+static const uint16_t bitstream_flash_cs_pins = GPIO4;
 
 // UART (bridged to USB CDC-ACM endpoint)
 static const uint32_t fpga_uart = USART1;

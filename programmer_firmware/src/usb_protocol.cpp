@@ -1,3 +1,4 @@
+#include <flash.hpp>
 #include <fpga.hpp>
 #include <rgb.hpp>
 #include <spi.hpp>
@@ -73,14 +74,20 @@ void UsbProto::handle_fpga_reset_assert(const uint8_t *buf, int len) {
   FPGA::assert_reset();
   // Take our hardware SPI out of tri-state so we can talk to the flash chip
   SPI::init();
+  // Ensure the flash is in a sane state
+  Flash::init();
+  Flash::reset();
+  Flash::wakeup();
 }
 
 void UsbProto::handle_fpga_reset_deassert(const uint8_t *buf, int len) {
   // Put our SPI back in high-Z mode
+  Flash::deinit();
   SPI::deinit();
   // Allow the FPGA to run again
   FPGA::deassert_reset();
 }
+
 void UsbProto::handle_fpga_query_status(const uint8_t *buf, int len) {
   uint8_t status = 0;
 
@@ -92,7 +99,15 @@ void UsbProto::handle_fpga_query_status(const uint8_t *buf, int len) {
   USB::transmit_programming_packet(resp, sizeof(resp));
 }
 
-void UsbProto::handle_flash_identify(const uint8_t *buf, int len) {}
+void UsbProto::handle_flash_identify(const uint8_t *buf, int len) {
+  // Perform the SPI transaction to get the chip IDs
+  uint8_t resp[2] = {0x13, 0x37};
+  Flash::read_mfgr_and_device_id(&resp[0], &resp[1]);
+
+  // Send response
+  USB::transmit_programming_packet(resp, sizeof(resp));
+}
+
 void UsbProto::handle_flash_erase_4k(const uint8_t *buf, int len) {}
 void UsbProto::handle_flash_erase_32k(const uint8_t *buf, int len) {}
 void UsbProto::handle_flash_erase_64k(const uint8_t *buf, int len) {}
