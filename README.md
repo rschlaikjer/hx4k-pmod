@@ -4,6 +4,9 @@ This repository contains the KiCad hardware design files, flash programming
 firmware and some gateware samples for a basic FPGA breakout board based on the
 Lattice Ice40 HX4K.
 
+More information about this project can be found
+[in this blog post](https://rhye.org/post/fpgas-1-running-on-hardware/).
+
 ![Assembled Board](/img/hx4k_breakout_front_1000px.jpg)
 
 ## Building the hardware
