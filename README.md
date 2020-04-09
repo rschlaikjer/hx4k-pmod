@@ -28,7 +28,13 @@ without one.
 
 ### Ordering PCBs
 
-TODO
+If you have done this before, you can clone this repo and then zip up the
+gerber fills in the
+[hardware/gerber/](https://github.com/rschlaikjer/hx4k-pmod/tree/master/hardware/gerber/)
+directory and upload them to your preferred board house.
+Alternately, or for convenience, you can
+[order this design directly](https://www.pcbway.com/project/shareproject/Lattice_HX4K_FPGA_Breakout.html)
+from PCBWay, a budget PCB house with respectable quality and turnaround time.
 
 ### Bill of materials
 
