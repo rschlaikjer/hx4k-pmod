@@ -12,14 +12,7 @@ module top(
         output wire LED_B,
 
         // PMOD C1
-        output wire PMOD_C1_D0,
-        output wire PMOD_C1_D1,
-        output wire PMOD_C1_D2,
-        output wire PMOD_C1_D3,
-        output wire PMOD_C1_D4,
-        output wire PMOD_C1_D5,
-        output wire PMOD_C1_D6,
-        output wire PMOD_C1_D7,
+        output wire [7:0] PMOD_C1,
 
         input wire MCU_UART_TX,
         output wire MCU_UART_RX
@@ -35,23 +28,14 @@ module top(
 
     // 7-segment counter
     reg [7:0] seven_seg_counter = 0;
-    wire [6:0] segments;
-    assign {
-        PMOD_C1_D6, // G
-        PMOD_C1_D5, // F
-        PMOD_C1_D4, // E
-        PMOD_C1_D3, // D
-        PMOD_C1_D2, // C
-        PMOD_C1_D1, // B
-        PMOD_C1_D0  // A
-    } = segments;
+    wire [6:0] segments = PMOD_C1[6:0];
 
     // Byte to 7-segment converter
     seven_segment ss1(
         .i_clk(clk_48mhz),
         .i_data(seven_seg_counter),
         .o_segments(segments),
-        .o_digit(PMOD_C1_D7)
+        .o_digit(PMOD_C1[7])
     );
 
     // State counter for RGB LEDs
