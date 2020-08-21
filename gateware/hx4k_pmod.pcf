@@ -45,7 +45,7 @@ set_io -nowarn PMOD_A2[3]   38
 set_io -nowarn PMOD_A2[4]   44
 set_io -nowarn PMOD_A2[5]   42
 set_io -nowarn PMOD_A2[6]   39
-set_io -nowarn PMOD_A2[7]   47
+set_io -nowarn PMOD_A2[7]   37
 
 # A3
 set_io -nowarn PMOD_A3[0]   31
